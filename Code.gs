@@ -58,3 +58,13 @@ function test()
     
      Logger.log("end")
 }
+
+function checkExpired(v)
+{
+  // input must be a(n Object) value.
+  let parsedv = Date.parse(v)
+  let currtime = new Date()
+ 
+  return (parsedv > currtime)
+  
+}
