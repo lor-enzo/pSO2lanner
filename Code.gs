@@ -19,7 +19,7 @@ function onEdit(e){
     Logger.log("Failed # check.")
     return;
   }
-  if (column == 23 && e.value == true)
+  if (column == 23 && e.value == "TRUE")
     AuxilliaryReplaceTime(row)
     
     }
@@ -83,13 +83,12 @@ function AuxilliaryReturnCheck()
     Logger.log("In loop; checking row")
     Logger.log(row)
     Logger.log(sheet.getRange(row,23).getValue())
-
+    
     
     if (sheet.getRange(row, 23).getValue() != true)
     {
       Logger.log("checkbox not true, skipping row")
       row++
-
       continue
     }
     
