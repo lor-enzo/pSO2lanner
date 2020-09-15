@@ -28,10 +28,13 @@ function AuxilliaryReplaceTime(row)
 {
   var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 24)
   var orders = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 25).getValue()
+ 
+  var timezone = "GMT+8"
   
-  var orderoffset = 8 + orders
-  var timezone = "GMT+" + orderoffset
-  var date = Utilities.formatDate(new Date(), timezone, "yyyy-MM-dd hh:mm:ss")
+  var today = new Date()
+  today.setHours(today.getHours() + orders);
+  
+  var date = Utilities.formatDate(today, timezone, "yyyy-MM-dd HH:mm:ss")
   time.setValue(date)
 }
 
@@ -50,6 +53,23 @@ function checkIsRowAccount(row)
   let check = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 1).getValue()
   return check == '#'
 }
+
+function checkNumberOfAccounts()
+{
+  let count = 0;
+  let row = 4;
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
+  
+  while (checkIsRowAccount(row))
+  {
+    count++
+    row++
+  }
+
+  Logger.log(count)
+  return count
+}
+
 function AuxilliaryReturnCheck()
 {
   // every 5 minutes, loop through all the accounts and see if their auxilliary has returned.
@@ -79,5 +99,4 @@ function AuxilliaryReturnCheck()
     }
     row++
   }
-  
 }
