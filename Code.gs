@@ -65,7 +65,7 @@ function checkExpired(v)
   let parsedv = Date.parse(v)
   let currtime = new Date()
   
-  return (parsedv > currtime)
+  return (parsedv < currtime)
 }
 
 function checkIsRowAccount(row)
@@ -90,7 +90,6 @@ function AuxilliaryReturnCheck()
     if (sheet.getRange(row, 23).getValue() != true)
     {
       Logger.log("checkbox not true, skipping row")
-      Logger.log(row)
       row++
 
       continue
@@ -101,7 +100,6 @@ function AuxilliaryReturnCheck()
     if (checkExpired(sheet.getRange(row, 24).getValue()))
     {
       Logger.log("checkExpired() returned true, falsing checkbox in row")
-      Logger.log(row)
       sheet.getRange(row, 23).setValue(false)
     }
     
