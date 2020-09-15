@@ -22,15 +22,7 @@ function onEdit(e){
   if (column == 23 && e.value == "TRUE")
     AuxilliaryReplaceTime(row)
     
-    }
-
-function onEditAuxilliary(e){
-  Logger.log("onEditAuxilliary(e)")
-  let sheet = e.range.getSheet()
-  let row = e.range.getRow()
-  let timetarget = sheet.getRange(row, 24)
-  let ordernumer = sheet.getRange(row,25).getValue()
-  }
+}
 
 function AuxilliaryReplaceTime(row)
 {
@@ -41,20 +33,6 @@ function AuxilliaryReplaceTime(row)
   var timezone = "GMT+" + orderoffset
   var date = Utilities.formatDate(new Date(), timezone, "yyyy-MM-dd hh:mm:ss")
   time.setValue(date)
-}
-
-function test()
-{
-  var something = Date.parse(SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(4,24).getValue())
-  var something2 = new Date()
-  
-  if (something < something2)
-    Logger.log("now is older than target time")
-    
-    if (something > something2)
-      Logger.log("nyes")
-      
-      Logger.log("end")
 }
 
 function checkExpired(v)
@@ -99,7 +77,6 @@ function AuxilliaryReturnCheck()
       Logger.log("checkExpired() returned true, falsing checkbox in row")
       sheet.getRange(row, 23).setValue(false)
     }
-    
     row++
   }
   
