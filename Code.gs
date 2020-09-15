@@ -10,19 +10,17 @@ function onEdit(e){
   
   // now check if the cell in column 1 of row == '#'
   
-  var check = range.getSheet().getRange(row, 1);
   Logger.log(e.value) // value
-  Logger.log(check.getValue()) // # check
   var c2 = range.getSheet().getRange(row, 3) // name
   Logger.log(c2.getValue())
   
-  if (check != '#')
+  if (!checkIsRowAccount(row))
   {
     Logger.log("Failed # check.")
     return;
   }
-  if (column == 23)
-    onEditAuxilliary(e)
+  if (column == 23 && e.value == true)
+    AuxilliaryReplaceTime(row)
     
     }
 
@@ -41,7 +39,7 @@ function AuxilliaryReplaceTime(row)
   
   var orderoffset = 8 + orders
   var timezone = "GMT+" + orderoffset
-  var date = Utilities.formatDate(new Date(), timezone, "HH:mm")
+  var date = Utilities.formatDate(new Date(), timezone, "yyyy-MM-dd hh:mm:ss")
   time.setValue(date)
 }
 
