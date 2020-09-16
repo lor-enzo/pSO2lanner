@@ -22,6 +22,12 @@ function onEdit(e){
   if (column == 23 && e.value == "TRUE")
     AuxilliaryReplaceTime(row)
     
+  else if (column == 27 && e.value == "TRUE")
+    YerkesReplaceTime(row)
+  
+  else if (column == 30 && e.value == "TRUE")
+    SGReplaceTime(row)
+    
 }
 
 function AuxilliaryReplaceTime(row)
@@ -33,6 +39,32 @@ function AuxilliaryReplaceTime(row)
   
   var today = new Date()
   today.setHours(today.getHours() + orders);
+  
+  var date = Utilities.formatDate(today, timezone, "yyyy-MM-dd HH:mm:ss")
+  time.setValue(date)
+}
+
+function YerkesReplaceTime(row)
+{
+  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 28)
+ 
+  var timezone = "GMT+8"
+  
+  var today = new Date()
+  today.setDate(today.getDate() + 7);
+  
+  var date = Utilities.formatDate(today, timezone, "yyyy-MM-dd HH:mm:ss")
+  time.setValue(date)
+}
+
+function SGReplaceTime(row)
+{
+  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 31)
+  
+  var timezone = "GMT+8"
+  
+  var today = new Date()
+  today.setHours(today.getHours() + 22);
   
   var date = Utilities.formatDate(today, timezone, "yyyy-MM-dd HH:mm:ss")
   time.setValue(date)
@@ -65,7 +97,6 @@ function checkNumberOfAccounts()
     count++
     row++
   }
-
   Logger.log(count)
   return count
 }
@@ -96,6 +127,70 @@ function AuxilliaryReturnCheck()
     {
       Logger.log("checkExpired() returned true, falsing checkbox in row")
       sheet.getRange(row, 23).setValue(false)
+      sheet.getRange(row, 24).clearContent()
+    }
+    row++
+  }
+}
+
+function YerkesReturnCheck()
+{
+  // every 5 minutes, loop through all the accounts and see if their auxilliary has returned.
+  // loop from row 4
+  let row = 4
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
+  while (checkIsRowAccount(row))
+  {
+    Logger.log("In loop; checking row")
+    Logger.log(row)
+    Logger.log(sheet.getRange(row,27).getValue())
+    
+    if (sheet.getRange(row, 27).getValue() != true)
+    {
+      Logger.log("checkbox not true, skipping row")
+      row++
+      continue
+    }
+    
+    Logger.log(checkExpired(sheet.getRange(row, 28).getValue()))
+    
+    if (checkExpired(sheet.getRange(row, 28).getValue()))
+    {
+      Logger.log("checkExpired() returned true, falsing checkbox in row")
+      sheet.getRange(row, 27).setValue(false)
+      sheet.getRange(row, 28).clearContent()
+    }
+    row++
+  }
+}
+
+function SGReturnCheck()
+{
+  // every 5 minutes, loop through all the accounts and see if their auxilliary has returned.
+  // loop from row 4
+  let row = 4
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
+  while (checkIsRowAccount(row))
+  {
+    Logger.log("In loop; checking row")
+    Logger.log(row)
+    Logger.log(sheet.getRange(row,30).getValue())
+    
+    
+    if (sheet.getRange(row, 30).getValue() != true)
+    {
+      Logger.log("checkbox not true, skipping row")
+      row++
+      continue
+    }
+    
+    Logger.log(checkExpired(sheet.getRange(row, 31).getValue()))
+    
+    if (checkExpired(sheet.getRange(row, 31).getValue()))
+    {
+      Logger.log("checkExpired() returned true, falsing checkbox in row")
+      sheet.getRange(row, 30).setValue(false)
+      sheet.getRange(row, 31).clearContent()
     }
     row++
   }
