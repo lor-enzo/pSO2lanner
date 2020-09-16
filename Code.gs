@@ -226,3 +226,14 @@ function GatheringRestoreEnergy()
     row++
   }
 }
+
+function WeeklyReset()
+{
+  // every wednesday, 4pm (gmt +8)
+  let row = 4
+  let charcount = checkNumberOfAccounts()
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
+  
+  sheet.getRange(row, 5, charcount, 7).setValue(false)
+  sheet.getRange(row, 13, charcount, 2).setValue(false)
+}
