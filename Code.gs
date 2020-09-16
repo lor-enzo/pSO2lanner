@@ -1,7 +1,3 @@
-function myFunction() {
-  AuxilliaryReplaceTime(7)
-}
-
 function onEdit(e){
   // get the coordinates
   var range = e.range
@@ -27,6 +23,9 @@ function onEdit(e){
   
   else if (column == 30 && e.value == "TRUE")
     SGReplaceTime(row)
+    
+  else if (column == 18 && e.value == "TRUE")
+    GatheringResetEnergy(row)
     
 }
 
@@ -68,6 +67,14 @@ function SGReplaceTime(row)
   
   var date = Utilities.formatDate(today, timezone, "yyyy-MM-dd HH:mm:ss")
   time.setValue(date)
+}
+
+function GatheringResetEnergy(row)
+{
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
+  sheet.getRange(row, 18).setValue(false)
+  sheet.getRange(row, 19).setValue(0)
+  
 }
 
 function checkExpired(v)
@@ -192,6 +199,30 @@ function SGReturnCheck()
       sheet.getRange(row, 30).setValue(false)
       sheet.getRange(row, 31).clearContent()
     }
+    row++
+  }
+}
+
+function GatheringRestoreEnergy()
+{
+  // run this function every 3 minutes
+  // energy takes 300 mins to restore
+  
+  let row = 4
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
+  while (checkIsRowAccount(row))
+  {
+    let energy = sheet.getRange(row, 19)
+    if (energy.getValue() < 100)
+    {
+      energy.setValue(energy.getValue() + 1/3)
+    }
+    
+    if (energy.getValue() >= 100)
+    {
+      energy.setValue(100)
+    } 
+    
     row++
   }
 }
