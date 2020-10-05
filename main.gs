@@ -36,12 +36,15 @@ function onEdit(e){
         else if (column == harvestcheckboxcol && e.value == "TRUE")
           GatheringResetEnergy(row)
           
-          }
+          else if (column == zigcheckboxcol && e.value == "TRUE")
+            ZigReplaceTime(row)
+            
+            }
 
 function AuxilliaryReplaceTime(row)
 {
-  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 21)
-  var orders = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 22).getValue()
+  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, auxcheckboxcol+1)
+  var orders = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, auxcheckboxcol+2).getValue()
   
   var timezone = "GMT+8"
   
@@ -54,7 +57,7 @@ function AuxilliaryReplaceTime(row)
 
 function YerkesReplaceTime(row)
 {
-  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 28)
+  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, yerkescheckboxcol+1)
   
   var timezone = "GMT+8"
   
@@ -67,7 +70,7 @@ function YerkesReplaceTime(row)
 
 function SGReplaceTime(row)
 {
-  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 31)
+  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, sgcheckboxcol+1)
   
   var timezone = "GMT+8"
   
@@ -81,9 +84,21 @@ function SGReplaceTime(row)
 function GatheringResetEnergy(row)
 {
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
-  sheet.getRange(row, 16).setValue(false)
-  sheet.getRange(row, 17).setValue(0)
+  sheet.getRange(row, harvestcheckboxcol).setValue(false)
+  sheet.getRange(row, harvestcheckboxcol+1).setValue(0)
+}
+
+function ZigReplaceTime(row)
+{
+  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, zigcheckboxcol+1)
   
+  var timezone = "GMT+8"
+  
+  var today = new Date()
+  today.setDate(today.getDate() + 1)
+  
+  var date = Utilities.formatDate(today, timezone, "yyyy-MM-dd HH:mm:ss")
+  time.setValue(date)
 }
 
 function checkExpired(v)
@@ -100,9 +115,9 @@ function checkIsRowAccount(row)
   //return true/false if the row has a # in the 1st column
   if (SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getMaxRows() < row)
     return false
-  
-  let check = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 1).getValue()
-  return check == '#'
+    
+    let check = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 1).getValue()
+    return check == '#'
 }
 
 function checkNumberOfAccounts()
