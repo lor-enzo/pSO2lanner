@@ -254,6 +254,38 @@ function GatheringRestoreEnergy()
   }
 }
 
+function ZigReturnCheck()
+{
+  // every 5 minutes, loop through all the accounts and see if zig COs are ok.
+  // loop from row 10
+  let row = firstcharacterrow
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
+  while (checkIsRowAccount(row))
+  {
+    Logger.log("In loop checking row")
+    Logger.log(row)
+    Logger.log(sheet.getRange(row,zigcheckboxcol).getValue())
+    
+    
+    if (sheet.getRange(row, zigcheckboxcol).getValue() != true)
+    {
+      Logger.log("checkbox not true, skipping row")
+      row+=characterrowgap
+      continue
+    }
+    
+    Logger.log(checkExpired(sheet.getRange(row, zigcheckboxcol+1).getValue()))
+    
+    if (checkExpired(sheet.getRange(row, zigcheckboxcol+1).getValue()))
+    {
+      Logger.log("checkExpired() returned true, falsing checkbox in row")
+      sheet.getRange(row, zigcheckboxcol).setValue(false)
+      sheet.getRange(row, zigcheckboxcol+1).clearContent()
+    }
+    row+=characterrowgap
+  }
+}
+
 function WeeklyReset()
 {
   // every wednesday, 4pm (gmt +8)
