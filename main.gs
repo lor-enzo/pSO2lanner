@@ -1,5 +1,5 @@
-function onEdit(e){
-  // get the coordinates
+function TonEdit(e){
+  // get the coordinates  
   var range = e.range
   let row = range.getRow()
   let column = range.getColumn()
@@ -31,8 +31,8 @@ function onEdit(e){
 
 function AuxilliaryReplaceTime(row)
 {
-  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 24)
-  var orders = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 25).getValue()
+  var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 21)
+  var orders = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, 22).getValue()
  
   var timezone = "GMT+8"
   
@@ -72,8 +72,8 @@ function SGReplaceTime(row)
 function GatheringResetEnergy(row)
 {
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
-  sheet.getRange(row, 18).setValue(false)
-  sheet.getRange(row, 19).setValue(0)
+  sheet.getRange(row, 16).setValue(false)
+  sheet.getRange(row, 17).setValue(0)
   
 }
 
@@ -212,7 +212,7 @@ function GatheringRestoreEnergy()
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0]
   while (checkIsRowAccount(row))
   {
-    let energy = sheet.getRange(row, 19)
+    let energy = sheet.getRange(row, 17)
     if (energy.getValue() < 100)
     {
       energy.setValue(energy.getValue() + 1/3)
