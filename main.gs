@@ -1,5 +1,6 @@
 var firstcharacterrow = 10
 var characterrowgap = 6
+var dropdowncol = 2
 var harvestcheckboxcol = 16
 var auxcheckboxcol = 20
 var zigcheckboxcol = 24
@@ -39,8 +40,23 @@ function onEdit(e){
           else if (column == zigcheckboxcol && e.value == "TRUE")
             ZigReplaceTime(row)
             
+          else if (column == dropdowncol && e.value == "TRUE")
+            ExpandChecklist(row)
+            
+          else if (column == dropdowncol && e.value == "FALSE")
+            CollapseChecklist(row)  
             }
 
+
+function ExpandChecklist(row)
+{
+  SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].showRows(row+1, 5)
+}
+
+function CollapseChecklist(row)
+{
+    SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].hideRows(row+1, 5)
+}
 function AuxilliaryReplaceTime(row)
 {
   var time = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getRange(row, auxcheckboxcol+1)
